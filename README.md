@@ -1,5 +1,12 @@
 # moobot
 
+moobot is a shitty discord bot that allows people to pay respects.
+
+```
+[12:35 AM] apt-get moo: f
+[12:35 AM] moobot: apt-get moo pays their respects
+```
+
 now actually won't crash every 0.00001 seconds
 
 ## prereqs
@@ -21,6 +28,8 @@ now actually won't crash every 0.00001 seconds
 **next, add your discord token in the moobot.py file**
 
 **then, run**
+
+`source .venv/bin/activate`
 
 `python moobot.py`
 
