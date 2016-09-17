@@ -20,7 +20,10 @@ def on_ready():
 def on_message(message):
     if message.content == 'x' or message.content == 'f':
         if hasattr(message.author, 'nick'):
-            yield from client.send_message(message.channel, message.author.nick + ' pays their respects')
+            if message.author.nick is not None:
+                yield from client.send_message(message.channel, message.author.nick + ' pays their respects')
+            else:
+                yield from client.send_message(message.channel, message.author.name + ' pays their respects')
 
 
 client.run('token')
