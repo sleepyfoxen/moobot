@@ -21,6 +21,8 @@ now maybe won't crash every 0.00001 seconds
 
 `virtualenv -p $(which python3) .venv`
 
+`source .venv/bin/activate`
+
 **install dependencies**
 
 `pip install -r requirements.txt`
@@ -28,8 +30,6 @@ now maybe won't crash every 0.00001 seconds
 **next, add your discord token in the moobot.py file**
 
 **then, run**
-
-`source .venv/bin/activate`
 
 `python moobot.py`
 
