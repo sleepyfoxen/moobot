@@ -10,6 +10,8 @@ import asyncio
 import sqlite3
 
 
+DEBUG = False
+
 client = discord.Client()
 
 @client.event
@@ -25,6 +27,23 @@ def on_message(message):
     name = getattr(message.author, 'nick', None)
     if name is None:
         name = message.author.name
+
+
+    if DEBUG and message.content.startswith('super_secret_message'):
+        logs = yield from client.logs_from(message.channel, limit=10000)
+        for log in logs:
+            if log.content == 'f' or log.content == 'x':
+                u = (log.author.id,)
+                c.execute('select * from respect where user=?', u)
+                u_ = c.fetchone()
+                if u_ is not None:
+                    c.execute('update respect set f = f + 1 where user=?', u)
+                    conn.commit()
+                else:
+                    c.execute('insert into respect values(?, 1)', u)
+                    conn.commit()
+
+
 
 
     if message.content == 'x' or message.content == 'f':
