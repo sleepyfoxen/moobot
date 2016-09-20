@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """moobot
 moobot is a shitty discord bot that helps people
 pay their respects
@@ -7,6 +6,7 @@ pay their respects
 import discord
 import asyncio
 
+import re
 import sqlite3
 
 
@@ -23,6 +23,7 @@ def on_ready():
 @client.event
 @asyncio.coroutine
 def on_message(message):
+
     # should we use the username or the nickname?
     name = getattr(message.author, 'nick', None)
     if name is None:
@@ -46,7 +47,7 @@ def on_message(message):
 
 
 
-    if message.content == 'x' or message.content == 'f':
+    if len(message.content) == 1 and r.match(message.content) is not None:
         # we do two things:
         # 1. we increment their respect tallies in sqlite
         # 2. we let everyone know how respectful they are
@@ -78,7 +79,7 @@ def on_message(message):
         if result is not None:
             # this user has respect
             yield from client.send_message(message.channel,
-                                           '*%s*: %s respect' % (name, str(result[1])))
+                                    '*%s*: %s respect' % (name, str(result[1])))
 
         else:
             # this user has not f'ed before
@@ -92,6 +93,9 @@ c = conn.cursor()
 
 c.execute('''create table if not exists respect
              (user text, f integer) ''')
+
+# compile a regex for matching
+r = re.compile('[f|F|x|X]')
 
 
 client.run('token')
