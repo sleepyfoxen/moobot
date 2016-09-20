@@ -70,7 +70,7 @@ def on_message(message):
                                        name + ' pays their respects')
 
 
-    elif message.content == 'respect':
+    elif message.content.lower() == 'respect':
         # we're asked for how much respect someone has
         u = (message.author.id,)
         c.execute('select * from respect where user=?', u)
