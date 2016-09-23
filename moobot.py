@@ -10,6 +10,10 @@ import datetime
 import re
 import sqlite3
 
+try:
+    from fixed_karma import fixed
+except ImportError as e:
+    print("eh")
 
 DEBUG = False
 
@@ -73,6 +77,11 @@ def on_message(message):
         # we do two things:
         # 1. we increment their respect tallies in sqlite
         # 2. we let everyone know how respectful they are
+
+        if message.author.id in fixed:
+            # leet - don't change amount of stuffzies
+            yield from client.send_message(message.channel,
+                                           name + ' pays their respects')
 
         u = (message.author.id,)
 
