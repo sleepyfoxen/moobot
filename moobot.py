@@ -83,6 +83,7 @@ def on_message(message):
             # leet - don't change amount of stuffzies
             yield from client.send_message(message.channel,
                                            name + ' pays their respects')
+            return
 
         u = (message.author.id,)
 
@@ -142,7 +143,7 @@ def on_message(message):
             conn.commit()
 
             d_diff = d_new - d_last
-            if d_diff.days > 1:
+            if d_diff.days >= 1:
                 yield from client.send_message(message.channel,
                         'days since harambe was last mentioned: %s --> 0' % d_diff.days)
 
