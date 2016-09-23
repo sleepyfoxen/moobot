@@ -27,10 +27,15 @@ now maybe won't crash every 0.00001 seconds
 
 `pip install -r requirements.txt`
 
-**next, add your discord token in the moobot.py file**
+**next, add your discord token in the moobot.py file (you can also use username / password based auth, but it's not recommended).**
 
 **then, run**
 
 `python moobot.py`
 
 :D
+
+### things to make this slightly less shitty
+
+* get better memes (difficult)
+* use flask like decorator functions to specify the command / bot trigger and move all the logic out of `moobot.py`.
