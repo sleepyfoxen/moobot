@@ -6,6 +6,7 @@ pay their respects
 import discord
 import asyncio
 
+import datetime
 import re
 import sqlite3
 
@@ -18,6 +19,7 @@ client = discord.Client()
 @asyncio.coroutine
 def on_ready():
     print('%s - %s' % (client.user.name, client.user.id))
+    yield from client.change_status(game=discord.Game(name='moobot :D'))
 
 
 @client.event
@@ -44,8 +46,28 @@ def on_message(message):
                     c.execute('insert into respect values(?, 1)', u)
                     conn.commit()
 
+    elif DEBUG and message.content == 'harambe_memes':
+        newest = datetime.datetime.now() - datetime.timedelta(days=1000)
+        alt = False
+        logs = yield from client.logs_from(message.channel, limit=1000)
+        for log in logs:
+            if 'harambe' in log.content and not log == message:
+                if log.timestamp > newest:
+                    newest = log.timestamp
+                    alt = True
 
+        if alt:
 
+            result = c.execute('select * from harambe where channel=?', (message.channel.id,))
+            channel = result.fetchone()
+
+            if channel is not None:
+                # don't mess with current data
+                return
+            else:
+                # insert operation
+                c.execute('insert into harambe values (?, "' + str(newest) + '")', (message.channel.id,))
+                yield from client.send_message(message.channel, '[moobot debug]: %s' % str(newest))
 
     if len(message.content) == 1 and r.match(message.content) is not None:
         # we do two things:
@@ -86,13 +108,61 @@ def on_message(message):
             yield from client.send_message(message.channel,
                                            '*%s*: no respect :(' % name)
 
+    elif 'harambe' in message.content.lower():
+        # need to reset the number of days since harambe was last mentioned
+        # 1. check if the channel has ever crumbed before
+        # -> either reset date to current time or start a counter
+        channel_id = (message.channel.id,)
+
+        c.execute('select * from harambe where channel=?', channel_id)
+        result = c.fetchone()
+        if result is not None:
+            # previous channel
+            # message.timestamp is a native datetime.datetime object
+            # so in the database we are storing a serialised datetime.datetime object
+            # (=> str(datetime.datetime), it's a string-encoded ISO-based date)
+            d_last = datetime.datetime.strptime(result[1], '%Y-%m-%d %H:%M:%S.%f')
+            d_new = message.timestamp
+
+            d = str(d_new)
+
+            # update last in db
+            c.execute('update harambe set last = "' + d + '" where channel=?',
+                      channel_id)
+            conn.commit()
+
+            d_diff = d_new - d_last
+            if d_diff.days > 1:
+                yield from client.send_message(message.channel,
+                        'days since harambe was last mentioned: %s --> 0' % d_diff.days)
+
+            elif DEBUG:
+                yield from client.send_message(message.channel, '[moobot debug] %s' % str(d_diff))
+        else:
+            # new channel to the harambe meme
+            # just store the current time
+            d_new = message.timestamp
+
+            c.execute('insert into harambe values (?, "' + str(d_new) + '")', channel_id)
+            conn.commit()
 
 # connect to the DB
 conn = sqlite3.connect('respect.db')
 c = conn.cursor()
 
+
+# initialise if necessary
 c.execute('''create table if not exists respect
              (user text, f integer) ''')
+# user is the discord user id
+# f is an integer with the number of times a user has paid respects
+
+c.execute('''create table if not exists harambe
+             (channel text, last text)''')
+# channel is a discord channel id
+# last is a datetime containing the last noted harambe reference
+
+
 
 # compile a regex for matching
 r = re.compile('[f|F|x|X]')
