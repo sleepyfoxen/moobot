@@ -67,6 +67,7 @@ def on_message(message):
             else:
                 # insert operation
                 c.execute('insert into harambe values (?, "' + str(newest) + '")', (message.channel.id,))
+                conn.commit()
                 yield from client.send_message(message.channel, '[moobot debug]: %s' % str(newest))
 
     if len(message.content) == 1 and r.match(message.content) is not None:
