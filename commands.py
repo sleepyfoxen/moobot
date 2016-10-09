@@ -101,12 +101,12 @@ async def f(cls_, ctx):
 
 async def respect(cls_, ctx):
     """respect count"""
-    real = ctx.message in ['actualrespect', 'realrespect']
+    real = ctx.message.content.lower() in ['actualrespect', 'realrespect']
     r = 0
 
-    if ctx.message.author.id in config.fixed_karma:
+    if not real and ctx.message.author.id in config.fixed_karma:
         # we have the leet effect
-        r = str(config.fixed_karma[message.author.id])
+        r = str(config.fixed_karma[ctx.message.author.id])
 
     # we're asked for how much respect someone has
     u = (ctx.message.author.id,)
