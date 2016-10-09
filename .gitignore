@@ -1,0 +1,5 @@
+# untracked files
+.venv/
+moobot.db
+.log
+__pycache__/

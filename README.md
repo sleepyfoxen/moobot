@@ -11,9 +11,11 @@ now maybe won't crash every 0.00001 seconds
 
 ## prereqs
 
-* python 3.4 or 3.5
+* python ~~3.4 or~~ 3.5
 * virtualenv
 * pip
+
+(dropped support for python3.4 because I'm too lazy)
 
 ## install
 
@@ -27,7 +29,7 @@ now maybe won't crash every 0.00001 seconds
 
 `pip install -r requirements.txt`
 
-**next, add your discord token in the moobot.py file (you can also use username / password based auth, but it's not recommended).**
+**next, add your discord token in the config.py file (you can also use username / password based auth, but it's not recommended).**
 
 **then, run**
 
@@ -39,3 +41,7 @@ now maybe won't crash every 0.00001 seconds
 
 * get better memes (difficult)
 * use flask like decorator functions to specify the command / bot trigger and move all the logic out of `moobot.py`.
+
+### warnings
+
+discord.py is really hip and cool but unfortunately it doesn't document any of the `ext` framework. Luckily it's mostly self explanatory. Protip: a `Bot` is just a subclass of `discord.Client` (so moving to the `Bot` framework was pretty easily done).

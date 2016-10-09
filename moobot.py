@@ -3,162 +3,56 @@ moobot is a shitty discord bot that helps people
 pay their respects
 """
 
-import discord
 import asyncio
-
-import datetime
-import re
+import logging
 import sqlite3
 
-try:
-    from fixed_karma import fixed
-except ImportError as e:
-    print("eh")
+import discord
+from discord.ext import commands
 
-DEBUG = False
+import config
+import commands as command
 
-client = discord.Client()
-
-@client.event
-@asyncio.coroutine
-def on_ready():
-    print('%s - %s' % (client.user.name, client.user.id))
-    yield from client.change_status(game=discord.Game(name='moobot :D'))
+logging.basicConfig(level=logging.INFO)
 
 
-@client.event
-@asyncio.coroutine
-def on_message(message):
 
-    # should we use the username or the nickname?
-    name = getattr(message.author, 'nick', None)
-    if name is None:
-        name = message.author.name
+class Respect:
+    """Press f to pay respects."""
 
+    def __init__(self, bot):
+        self.bot = bot
+        self.conn = conn
+        self.c = c
 
-    if DEBUG and message.content.startswith('super_secret_message'):
-        logs = yield from client.logs_from(message.channel, limit=10000)
-        for log in logs:
-            if log.content == 'f' or log.content == 'x':
-                u = (log.author.id,)
-                c.execute('select * from respect where user=?', u)
-                u_ = c.fetchone()
-                if u_ is not None:
-                    c.execute('update respect set f = f + 1 where user=?', u)
-                    conn.commit()
-                else:
-                    c.execute('insert into respect values(?, 1)', u)
-                    conn.commit()
+    @commands.command(pass_context=True,
+        aliases=['F', 'x', 'X'])
+    async def f(self, ctx):
+        """pays respects"""
+        await command.f(self, ctx)
 
-    elif DEBUG and message.content == 'harambe_memes':
-        newest = datetime.datetime.now() - datetime.timedelta(days=1000)
-        alt = False
-        logs = yield from client.logs_from(message.channel, limit=1000)
-        for log in logs:
-            if 'harambe' in log.content and not log == message:
-                if log.timestamp > newest:
-                    newest = log.timestamp
-                    alt = True
-
-        if alt:
-
-            result = c.execute('select * from harambe where channel=?', (message.channel.id,))
-            channel = result.fetchone()
-
-            if channel is not None:
-                # don't mess with current data
-                return
-            else:
-                # insert operation
-                c.execute('insert into harambe values (?, "' + str(newest) + '")', (message.channel.id,))
-                conn.commit()
-                yield from client.send_message(message.channel, '[moobot debug]: %s' % str(newest))
-
-    if len(message.content) == 1 and r.match(message.content) is not None:
-        # we do two things:
-        # 1. we increment their respect tallies in sqlite
-        # 2. we let everyone know how respectful they are
-
-        if message.author.id in fixed:
-            # leet - don't change amount of stuffzies
-            yield from client.send_message(message.channel,
-                                           name + ' pays their respects')
-            return
-
-        u = (message.author.id,)
-
-        c.execute('select * from respect where user=?', u)
-        u_ = c.fetchone()
-        if u_ is not None:
-
-            c.execute('update respect set f = f + 1 where user=?', u)
-            conn.commit()
-
-        else:
-            # add user to db
-            c.execute('insert into respect values(?, 1)', u)
-            conn.commit()
-
-        yield from client.send_message(message.channel,
-                                       name + ' pays their respects')
+    @commands.command(pass_context=True,
+        aliases=['Respect', 'r', 'actualrespect', 'realrespect'])
+    async def respect(self, ctx):
+        """displays how much respect the user has"""
+        await command.respect(self, ctx)
 
 
-    elif message.content.lower() == 'respect':
-        # we're asked for how much respect someone has
-        u = (message.author.id,)
-        c.execute('select * from respect where user=?', u)
+class Harambe:
+    """Harambe related commands."""
 
-        result = c.fetchone()
-        if result is not None:
-            # this user has respect
-            yield from client.send_message(message.channel,
-                                    '*%s*: %s respect' % (name, str(result[1])))
+    def __init__(self, bot):
+        self.bot = bot
+        self.conn = conn
+        self.c = c
 
-        else:
-            # this user has not f'ed before
-            yield from client.send_message(message.channel,
-                                           '*%s*: no respect :(' % name)
-
-    elif 'harambe' in message.content.lower():
-        # need to reset the number of days since harambe was last mentioned
-        # 1. check if the channel has ever crumbed before
-        # -> either reset date to current time or start a counter
-        channel_id = (message.channel.id,)
-
-        c.execute('select * from harambe where channel=?', channel_id)
-        result = c.fetchone()
-        if result is not None:
-            # previous channel
-            # message.timestamp is a native datetime.datetime object
-            # so in the database we are storing a serialised datetime.datetime object
-            # (=> str(datetime.datetime), it's a string-encoded ISO-based date)
-            d_last = datetime.datetime.strptime(result[1], '%Y-%m-%d %H:%M:%S.%f')
-            d_new = message.timestamp
-
-            d = str(d_new)
-
-            # update last in db
-            c.execute('update harambe set last = "' + d + '" where channel=?',
-                      channel_id)
-            conn.commit()
-
-            d_diff = d_new - d_last
-            if d_diff.days >= 1:
-                yield from client.send_message(message.channel,
-                        'days since harambe was last mentioned: %s --> 0' % d_diff.days)
-
-            elif DEBUG:
-                yield from client.send_message(message.channel, '[moobot debug] %s' % str(d_diff))
-        else:
-            # new channel to the harambe meme
-            # just store the current time
-            d_new = message.timestamp
-
-            c.execute('insert into harambe values (?, "' + str(d_new) + '")', channel_id)
-            conn.commit()
+    @commands.command(pass_context=True)
+    async def harambe(self, ctx):
+        """resets the harambe counter"""
+        await command.harambe(self, ctx)
 
 # connect to the DB
-conn = sqlite3.connect('respect.db')
+conn = sqlite3.connect(config.database_file)
 c = conn.cursor()
 
 
@@ -169,14 +63,55 @@ c.execute('''create table if not exists respect
 # f is an integer with the number of times a user has paid respects
 
 c.execute('''create table if not exists harambe
-             (channel text, last text)''')
+             (server text, last text,
+              number integer, chain integer, max integer)''')
 # channel is a discord channel id
 # last is a datetime containing the last noted harambe reference
 
 
+bot = commands.Bot(command_prefix=commands.when_mentioned,
+    description='a shitty discord bot for respect and harambe')
+bot.add_cog(Harambe(bot))
+bot.add_cog(Respect(bot))
 
-# compile a regex for matching
-r = re.compile('[f|F|x|X]')
+harambe = bot.get_cog('Harambe')
+respect = bot.get_cog('Respect')
+
+logging.log(msg="cogs: %s %s" % (harambe, respect), level=logging.INFO)
+
+# helper function
+def context_factory(message, bot):
+    return commands.Context(message = message,
+                            bot = bot,
+                            args = [],
+                            kwargs = {},
+                            prefix = '',
+                            command = message.content)
 
 
-client.run('token')
+@bot.event
+async def on_ready():
+    logging.log(msg='%s - %s' % (bot.user.name, bot.user.id),
+        level=logging.INFO)
+    logging.log(msg='playing: %s' % config.status_message,
+        level=logging.INFO)
+    await bot.change_presence(
+        game=discord.Game(name='%s' % config.status_message))
+
+@bot.event
+async def on_message(message):
+    if message.content.lower() in ['f', 'x']:
+        await command.f(respect, context_factory(message, respect))
+    elif message.content.lower() in ['respect', 'actualrespect', 'realrespect']:
+        await command.respect(respect, context_factory(message, respect))
+    elif 'harambe' in message.content.lower():
+        await command.harambe(harambe, context_factory(message, harambe))
+
+
+
+if config.moobot_login['discord_token'] is not None:
+    bot.run(config.moobot_login['discord_token'])
+else:
+    bot.run(config.moobot_login['email'],
+        config.moobot_login['password'])
+
