@@ -106,7 +106,7 @@ async def on_message(message):
         await command.respect(respect, context_factory(message, respect))
     elif 'harambe' in message.content.lower():
         await command.harambe(harambe, context_factory(message, harambe))
-
+    await bot.process_commands(message)
 
 
 if config.moobot_login['discord_token'] is not None:
