@@ -52,7 +52,7 @@ async def harambe(cls_, ctx):
             cls_.conn.commit()
 
             await cls_.bot.send_message(ctx.message.channel,
-                'daily harambe chain: %s' % result[3])
+                'daily harambe chain: %s' % result[3] + 1)
         else:
             cls_.c.execute('''update harambe
                                 set number=number+1
