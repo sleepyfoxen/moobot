@@ -39,7 +39,16 @@ class Respect:
 
 
 class Harambe:
-    """Harambe related commands."""
+    """Harambe related commands.
+
+    Harambe on moobot works as follows:
+    1. work out how long since harambe was last mentioned
+    2. * if it's more than one day, display the difference in days+
+       * if it's exactly one day, display and update the chain variable+
+       * if it's less than one day, do nothing
+    3. except in the third case, reset the last mentioned data
+    4. update the counter
+    """
 
     def __init__(self, bot):
         self.bot = bot
@@ -77,7 +86,7 @@ bot.add_cog(Respect(bot))
 harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
 
-logging.log(msg="cogs: %s %s" % (harambe, respect), level=logging.INFO)
+logging.log(msg='cogs: %s %s' % (harambe, respect), level=logging.INFO)
 
 # helper function
 def context_factory(message, bot):
