@@ -108,13 +108,14 @@ async def respect(cls_, ctx):
         # we have the leet effect
         r = str(config.fixed_karma[ctx.message.author.id])
 
-    # we're asked for how much respect someone has
-    u = (ctx.message.author.id,)
-    cls_.c.execute('select * from respect where user=?', u)
+    else:
+        # we're asked for how much respect someone has
+        u = (ctx.message.author.id,)
+        cls_.c.execute('select * from respect where user=?', u)
 
-    result = cls_.c.fetchone()
-    if result is not None:
-        r = str(result[1])
+        result = cls_.c.fetchone()
+        if result is not None:
+            r = str(result[1])
 
 
     await cls_.bot.send_message(ctx.message.channel,
