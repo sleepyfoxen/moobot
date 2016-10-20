@@ -11,7 +11,7 @@ moobot_login = {
 }
 
 # this is the "now playing" game
-status_message = 'moobot for treasurer :D'
+status_message = 'dreaming'
 
 database_file = 'moobot.db'
 
