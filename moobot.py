@@ -6,6 +6,7 @@ pay their respects
 import asyncio
 import logging
 import sqlite3
+import re
 
 import discord
 from discord.ext import commands
@@ -101,6 +102,8 @@ harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
 one_two = bot.get_cog('OneTwoTwoTwoThreeFourFive')
 
+password_matcher = re.compile('122+345') # 1222*345
+
 logging.log(msg='cogs: %s %s %s' % (harambe, respect, one_two),
             level=logging.INFO)
 
@@ -135,7 +138,7 @@ async def on_message(message):
         await command.respect(respect, context_factory(message, respect))
     elif 'harambe' in message.content.lower():
         await command.harambe(harambe, context_factory(message, harambe))
-    elif '1222345' in message.content.lower():
+    elif password_matcher.match(message.content):
         await command.one_two_two_two_three_four_five(one_two,
                                             context_factory(message, one_two))
     await bot.process_commands(message)

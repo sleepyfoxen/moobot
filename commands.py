@@ -125,4 +125,4 @@ async def respect(cls_, ctx):
 async def one_two_two_two_three_four_five(cls_, ctx):
     """don't ask"""
 
-    await cls_.bot.send_message(ctx.message.channel, '1222345')
+    await cls_.bot.send_message(ctx.message.channel, ctx.message.content)
