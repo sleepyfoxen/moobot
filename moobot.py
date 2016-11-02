@@ -60,6 +60,19 @@ class Harambe:
         """resets the harambe counter"""
         await command.harambe(self, ctx)
 
+class OneTwoTwoTwoThreeFourFive:
+    """just don't ask"""
+
+    def __init__(self, bot):
+        self.bot = bot
+        self.conn = conn
+        self.c = c
+
+    @commands.command(pass_context=True)
+    async def one_two_two_two_three_four_five(self, ctx):
+        """just don't ask"""
+        await command.one_two_two_two_three_four_five(self, ctx)
+
 # connect to the DB
 conn = sqlite3.connect(config.database_file)
 c = conn.cursor()
@@ -82,11 +95,14 @@ bot = commands.Bot(command_prefix=commands.when_mentioned,
     description='a shitty discord bot for respect and harambe')
 bot.add_cog(Harambe(bot))
 bot.add_cog(Respect(bot))
+bot.add_cog(OneTwoTwoTwoThreeFourFive(bot))
 
 harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
+one_two = bot.get_cog('OneTwoTwoTwoThreeFourFive')
 
-logging.log(msg='cogs: %s %s' % (harambe, respect), level=logging.INFO)
+logging.log(msg='cogs: %s %s %s' % (harambe, respect, one_two),
+            level=logging.INFO)
 
 # helper function
 def context_factory(message, bot):
@@ -109,12 +125,19 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    if message.content.lower() in ['f', 'x']:
+    # don't trigger on own messages
+    if message.author.id == bot.user.id:
+        pass
+
+    elif message.content.lower() in ['f', 'x']:
         await command.f(respect, context_factory(message, respect))
     elif message.content.lower() in ['respect', 'actualrespect', 'realrespect']:
         await command.respect(respect, context_factory(message, respect))
     elif 'harambe' in message.content.lower():
         await command.harambe(harambe, context_factory(message, harambe))
+    elif '1222345' in message.content.lower():
+        await command.one_two_two_two_three_four_five(one_two,
+                                            context_factory(message, one_two))
     await bot.process_commands(message)
 
 
@@ -123,4 +146,3 @@ if config.moobot_login['discord_token'] is not None:
 else:
     bot.run(config.moobot_login['email'],
         config.moobot_login['password'])
-

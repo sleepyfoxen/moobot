@@ -120,3 +120,9 @@ async def respect(cls_, ctx):
 
     await cls_.bot.send_message(ctx.message.channel,
                         '*%s*: %s respect' % (ctx.message.author.mention, r))
+
+
+async def one_two_two_two_three_four_five(cls_, ctx):
+    """don't ask"""
+
+    await cls_.bot.send_message(ctx.message.channel, '1222345')
