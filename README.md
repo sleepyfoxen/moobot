@@ -47,3 +47,17 @@ now maybe won't crash every 0.00001 seconds
 discord.py is really hip and cool but unfortunately it doesn't document any of the `ext` framework. Luckily it's mostly self explanatory. Protip: a `Bot` is just a subclass of `discord.Client` (so moving to the `Bot` framework was pretty easily done).
 
 Also, if you are cool enough to use a compiled python, make sure that `sqlite-devel` or `libsqlite3-dev` (debian) is installed and `--enable-loadable-sqlite-extensions` is set (which may or may not be set by default if sqlite dev is already present)
+
+
+### shout at me
+
+I'm not currently on the discord server that interacts with moobot the most, so...
+
+If you want me to:
+
+* add moobot to your server
+* fix this sorry mess
+* shout at me for something else
+
+you can join moobot's discord server. The link is [https://discord.gg/QDJYvTz](https://discord.gg/QDJYvTz).
+
