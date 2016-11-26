@@ -6,12 +6,12 @@
 # as email address / password based login is depricated
 moobot_login = {
     'discord_token': None,
-    'email': '',
-    'password': ''
+    'email': input('email: '),
+    'password': input('password: ')
 }
 
 # this is the "now playing" game
-status_message = 'dreaming'
+status_message = 'moobot development happening now :D'
 
 database_file = 'moobot.db'
 

@@ -122,6 +122,51 @@ async def respect(cls_, ctx):
                         '*%s*: %s respect' % (ctx.message.author.mention, r))
 
 
+
+async def top_respect(cls_, ctx):
+    """moobot will output the global respect leaders"""
+
+    # rather painful in memory
+    members = tuple(ctx.message.server.members)
+    my_members = {}
+    for member in members:
+        # potential hits
+        my_members[member.id] = { 'name': member.display_name,
+                                  'score': -1e5 }
+
+    for row in cls_.c.execute('select * from respect'):
+        # row -> ( 'user id', amount )
+        if row[0] in my_members:
+            # keep
+            my_members[row[0]]['score'] = row[1]
+
+    # listify members
+    members_stripped = list(my_members.values())
+
+    # remove all those on default respect
+    members_stripped = list(filter(lambda member: member['score'] != -1e5,
+                                   members_stripped))
+
+    # limit results
+    members_stripped = members_stripped[:15]
+    members_stripped.sort(key=lambda member: member['score'], reverse=True)
+
+    message = 'the respect scores are as follows:\n```'
+    for member in members_stripped:
+        message += '{} - {} respect\n'.format(member['name'], member['score'])
+
+    message += '```'
+
+    print(message)
+    await cls_.bot.send_message(ctx.message.channel,
+                                message)
+
+
+async def with_rice(cls_, ctx):
+    """the spicy with rice meme,
+    gone from plaguing reddit to plaguing discord"""
+    pass
+
 async def one_two_two_two_three_four_five(cls_, ctx):
     """don't ask"""
 

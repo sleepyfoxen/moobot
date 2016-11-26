@@ -3,7 +3,6 @@ moobot is a shitty discord bot that helps people
 pay their respects
 """
 
-import asyncio
 import logging
 import sqlite3
 import re
@@ -38,6 +37,10 @@ class Respect:
         """displays how much respect the user has"""
         await command.respect(self, ctx)
 
+    @commands.command(pass_context=True)
+    async def top(self, ctx):
+        """displays the people with the most respect"""
+        await command.top_respect(self, ctx)
 
 class Harambe:
     """Harambe related commands.
@@ -61,13 +64,25 @@ class Harambe:
         """resets the harambe counter"""
         await command.harambe(self, ctx)
 
-class OneTwoTwoTwoThreeFourFive:
-    """just don't ask"""
+
+class WithRice:
+    """A retired meme"""
 
     def __init__(self, bot):
         self.bot = bot
         self.conn = conn
         self.c = c
+
+    @commands.command(pass_context=True)
+    async def with_rice(self, ctx):
+        """spicy memes return to moobot? nah"""
+        await commands.with_rice
+
+class OneTwoTwoTwoThreeFourFive:
+    """just don't ask"""
+
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(pass_context=True)
     async def one_two_two_two_three_four_five(self, ctx):
@@ -128,6 +143,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    # print(message.content.lower())
     # don't trigger on own messages
     if message.author.id == bot.user.id:
         pass
@@ -136,6 +152,8 @@ async def on_message(message):
         await command.f(respect, context_factory(message, respect))
     elif message.content.lower() in ['respect', 'actualrespect', 'realrespect']:
         await command.respect(respect, context_factory(message, respect))
+    elif message.content.lower() == 'top':
+        await command.top_respect(respect, context_factory(message, respect))
     elif 'harambe' in message.content.lower():
         await command.harambe(harambe, context_factory(message, harambe))
     elif password_matcher.match(message.content):
