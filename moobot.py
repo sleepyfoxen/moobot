@@ -106,20 +106,29 @@ c.execute('''create table if not exists harambe
 # channel is a discord channel id
 # last is a datetime containing the last noted harambe reference
 
+c.execute('''create table if not exists ratings
+              (thing text, rater text,
+              without integer, with integer)''')
+
+
 
 bot = commands.Bot(command_prefix=commands.when_mentioned,
     description='a shitty discord bot for respect and harambe')
 bot.add_cog(Harambe(bot))
 bot.add_cog(Respect(bot))
 bot.add_cog(OneTwoTwoTwoThreeFourFive(bot))
+bot.add_cog(WithRice(bot))
 
 harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
 one_two = bot.get_cog('OneTwoTwoTwoThreeFourFive')
+with_rice = bot.get_cog('WithRice')
 
 password_matcher = re.compile('122+345') # 1222*345
+with_rice_matcher = re.compile('.*[0-9]+/10.*')
 
-logging.log(msg='cogs: %s %s %s' % (harambe, respect, one_two),
+
+logging.log(msg='cogs: %s %s %s %s' % (harambe, respect, one_two, with_rice),
             level=logging.INFO)
 
 # helper function
@@ -156,6 +165,8 @@ async def on_message(message):
         await command.top_respect(respect, context_factory(message, respect))
     elif 'harambe' in message.content.lower():
         await command.harambe(harambe, context_factory(message, harambe))
+    elif with_rice_matcher.match(message.content):
+        await command.with_rice(WithRice, context_factory(message, with_rice))
     elif password_matcher.match(message.content):
         await command.one_two_two_two_three_four_five(one_two,
                                             context_factory(message, one_two))

@@ -165,7 +165,9 @@ async def top_respect(cls_, ctx):
 async def with_rice(cls_, ctx):
     """the spicy with rice meme,
     gone from plaguing reddit to plaguing discord"""
-    pass
+    are_we_riced = 'rice' in ctx.message.content.lower()
+
+# TODO: this
 
 async def one_two_two_two_three_four_five(cls_, ctx):
     """don't ask"""
