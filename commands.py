@@ -117,38 +117,29 @@ async def respect(cls_, ctx):
         if result is not None:
             r = str(result[1])
 
-
     await cls_.bot.send_message(ctx.message.channel,
                         '*%s*: %s respect' % (ctx.message.author.mention, r))
-
 
 
 async def top_respect(cls_, ctx):
     """moobot will output the global respect leaders"""
 
-    # rather painful in memory
-    members = tuple(ctx.message.server.members)
     my_members = {}
-    for member in members:
-        # potential hits
-        my_members[member.id] = { 'name': member.display_name,
-                                  'score': -1e5 }
 
     for row in cls_.c.execute('select * from respect'):
         # row -> ( 'user id', amount )
-        if row[0] in my_members:
+        memer = ctx.message.server.get_member(row[0])
+        if memer is not None:
             # keep
-            my_members[row[0]]['score'] = row[1]
+            my_members[row[0]] = { 'score' : row[1],
+                                   'name': memer.display_name }
+
 
     # listify members
     members_stripped = list(my_members.values())
 
-    # remove all those on default respect
-    members_stripped = list(filter(lambda member: member['score'] != -1e5,
-                                   members_stripped))
-
     # limit results
-    members_stripped = members_stripped[:15]
+    members_stripped = members_stripped[:30]
     members_stripped.sort(key=lambda member: member['score'], reverse=True)
 
     message = 'the respect scores are as follows:\n```'
