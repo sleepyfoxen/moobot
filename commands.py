@@ -148,7 +148,7 @@ async def top_respect(cls_, ctx):
 
     message += '```'
 
-    print(message)
+    # print(message)
     await cls_.bot.send_message(ctx.message.channel,
                                 message)
 
