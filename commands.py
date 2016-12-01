@@ -139,8 +139,8 @@ async def top_respect(cls_, ctx):
     members_stripped = list(my_members.values())
 
     # limit results
-    members_stripped = members_stripped[:30]
     members_stripped.sort(key=lambda member: member['score'], reverse=True)
+    members_stripped = members_stripped[:30]
 
     message = 'the respect scores are as follows:\n```'
     for member in members_stripped:
@@ -152,6 +152,10 @@ async def top_respect(cls_, ctx):
     await cls_.bot.send_message(ctx.message.channel,
                                 message)
 
+
+async def emojii_pasta(cls_, ctx):
+    """translates text to emojii, see emojiityper.com"""
+    pass
 
 async def with_rice(cls_, ctx):
     """the spicy with rice meme,

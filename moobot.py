@@ -89,6 +89,17 @@ class OneTwoTwoTwoThreeFourFive:
         """just don't ask"""
         await command.one_two_two_two_three_four_five(self, ctx)
 
+class CopyPasta:
+    """don't know why I made this"""
+
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command(pass_context=True)
+    async def copy_pasta(self, ctx):
+        """memify your text"""
+
+
 # connect to the DB
 conn = sqlite3.connect(config.database_file)
 c = conn.cursor()
