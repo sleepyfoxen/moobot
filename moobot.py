@@ -26,7 +26,7 @@ class Respect:
         self.c = c
 
     @commands.command(pass_context=True,
-        aliases=['F', 'x', 'X'])
+        aliases=['F', 'x', 'X' 'Blep' 'blep'])
     async def f(self, ctx):
         """pays respects"""
         await command.f(self, ctx)
@@ -168,7 +168,7 @@ async def on_message(message):
     if message.author.id == bot.user.id:
         pass
 
-    elif message.content.lower() in ['f', 'x']:
+    elif message.content.lower() in ['f', 'x' 'blep',]:
         await command.f(respect, context_factory(message, respect))
     elif message.content.lower() in ['respect', 'actualrespect', 'realrespect']:
         await command.respect(respect, context_factory(message, respect))
