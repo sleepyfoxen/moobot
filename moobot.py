@@ -26,7 +26,7 @@ class Respect:
         self.c = c
 
     @commands.command(pass_context=True,
-        aliases=['F', 'x', 'X' 'Blep' 'blep'])
+        aliases=['F', 'x', 'X', 'Blep', 'blep'])
     async def f(self, ctx):
         """pays respects"""
         await command.f(self, ctx)
