@@ -140,7 +140,7 @@ async def top_respect(cls_, ctx):
 
     # limit results
     members_stripped.sort(key=lambda member: member['score'], reverse=True)
-    members_stripped = members_stripped[:30]
+    members_stripped = members_stripped[:50]
 
     message = 'the respect scores are as follows:\n```'
     for member in members_stripped:
