@@ -134,9 +134,11 @@ harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
 one_two = bot.get_cog('OneTwoTwoTwoThreeFourFive')
 with_rice = bot.get_cog('WithRice')
+announce_new_brother = bot.get_cog('AnnoucneNewBrother')
 
 password_matcher = re.compile('122+345') # 1222*345
 with_rice_matcher = re.compile('.*[0-9]+/10.*')
+role_change_matcher = re.compile('^!change_role of (\w+?) to (\w+?)')
 
 
 logging.log(msg='cogs: %s %s %s %s' % (harambe, respect, one_two, with_rice),
@@ -181,8 +183,24 @@ async def on_message(message):
     elif password_matcher.match(message.content):
         await command.one_two_two_two_three_four_five(one_two,
                                             context_factory(message, one_two))
+    elif result = role_change_matcher.match(message.content.lower()):
+        try:
+            member = discord.Member(id=result[0])
+            role = [discord.Role(name="NOT GREIG | MEMBERS")]
+            await bot.replace_roles(member, *role)
+            await bot.send_message(message.channel, "{}'s role changed to {}".format(member.name, role.name))
+            break
+        except Forbidden:
+            print("Don't have the permission to do it; message Sara")
+        except HTTPException:
+            print("Got an HTTPException for some reason")
+
     await bot.process_commands(message)
 
+@bot.event
+async def on_member_join(member):
+    await command.announce_new_brother(announce_new_brother,
+            context_factory(member, announce_new_brother))
 
 if config.moobot_login['discord_token'] is not None:
     bot.run(config.moobot_login['discord_token'])
