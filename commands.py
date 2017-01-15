@@ -1,3 +1,4 @@
+
 """holds moobots commands"""
 import asyncio
 import datetime
@@ -168,3 +169,25 @@ async def one_two_two_two_three_four_five(cls_, ctx):
     """don't ask"""
 
     await cls_.bot.send_message(ctx.message.channel, ctx.message.content)
+
+async def moo(cls_, ctx):
+    """moo"""
+    message = '''```
+             (__)
+             (oo)
+       /------\/
+      / |    ||
+     *  /\---/\
+        ~~   ~~
+    ...."Have you mooed today?"...
+    ```
+    '''
+    await cls_.bot.send_message(ctx.message.channel, message)
+
+async def announce_new_brother(cls_, ctx):
+    """A new member of The Cult has joined us, and for this we must give our welcome"""
+    message = '{} has joined us'.format(ctx.member)
+    await cls_.send_message(ctx.message.channel, message)
+    # TODO: replace_roles(member, *roles)
+    role = Role(name='Not Greig | Members')
+    await cls_.bot.replace_roles(member, [role])
