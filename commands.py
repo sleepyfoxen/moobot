@@ -170,6 +170,20 @@ async def one_two_two_two_three_four_five(cls_, ctx):
 
     await cls_.bot.send_message(ctx.message.channel, ctx.message.content)
 
+async def moo(cls_, ctx):
+    """moo"""
+    message = '''```
+             (__)
+             (oo)
+       /------\/
+      / |    ||
+     *  /\---/\
+        ~~   ~~
+    ...."Have you mooed today?"...
+    ```
+    '''
+    await cls_.bot.send_message(ctx.message.channel, message)
+
 async def announce_new_brother(cls_, ctx):
     """A new member of The Cult has joined us, and for this we must give our welcome"""
     message = '{} has joined us'.format(ctx.member)

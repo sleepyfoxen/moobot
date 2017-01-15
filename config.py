@@ -5,9 +5,9 @@
 # please use an API token if you can
 # as email address / password based login is depricated
 moobot_login = {
-    'discord_token': None,
-    'email': input('email: '),
-    'password': input('password: ')
+    'discord_token': 'MTk5NjQ3ODc1NjMyNzI2MDE3.C11EWQ.lXLbLtW6QKCYHczrM3Higr90y20',
+    'email': input(''),
+    'password': input('')
 }
 
 # this is the "now playing" game
