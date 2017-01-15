@@ -1,4 +1,3 @@
-
 """holds moobots commands"""
 import asyncio
 import datetime
@@ -177,7 +176,7 @@ async def moo(cls_, ctx):
              (oo)
        /------\/
       / |    ||
-     *  /\---/\
+     *  /\---/\\
         ~~   ~~
     ...."Have you mooed today?"...
     ```
