@@ -4,3 +4,4 @@ moobot.db
 .log
 __pycache__/
 .idea/
+config.py

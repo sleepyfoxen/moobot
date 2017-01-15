@@ -20,3 +20,5 @@ fixed_karma = {
 }
 
 DEBUG = False
+
+test = None
