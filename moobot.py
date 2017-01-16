@@ -108,6 +108,16 @@ class Moo:
     async def moo(self, ctx):
         await command.moo(self, ctx)
 
+class AnnounceNewBrother:
+    """New brother"""
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command(pass_context=True)
+    async def announce_new_brother(self, member):
+        await command.announce_new_brother(self, member)
+
+
 # connect to the DB
 conn = sqlite3.connect(config.database_file)
 c = conn.cursor()
@@ -138,6 +148,7 @@ bot.add_cog(Respect(bot))
 bot.add_cog(OneTwoTwoTwoThreeFourFive(bot))
 bot.add_cog(WithRice(bot))
 bot.add_cog(Moo(bot))
+bot.add_cog(AnnounceNewBrother(bot))
 
 harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
@@ -148,7 +159,7 @@ announce_new_brother = bot.get_cog('AnnounceNewBrother')
 
 password_matcher = re.compile('122+345') # 1222*345
 with_rice_matcher = re.compile('.*[0-9]+/10.*')
-role_change_matcher = re.compile('^!change_role of (\d+?) to (\w+?)')
+# role_change_matcher = re.compile('^!change_role of (\d+?) to (\w+)$')
 
 
 # TODO: Map the cog strings to a single variable
@@ -195,6 +206,9 @@ async def on_message(message):
                                             context_factory(message, one_two))
     elif message.content.lower() in ['apt-get moo', 'moo']:
         await command.moo(moo_cog, context_factory(message, moo_cog))
+    elif message.content.lower() == 'test':
+        for i in message.server.roles:
+            print("{}: {}".format(i.id, i.name))
     elif role_change_matcher.match(message.content.lower()):
         try:
             result = role_change_matcher.match(message.content.lower())
@@ -202,9 +216,8 @@ async def on_message(message):
             # message.server will return `None`
             member = message.server.get_member(result.group(1))
             server_roles = message.server.roles
-            role = next(x for x in server_roles if lambda x : x.name == result.group(2))
-            print(str(role))
-            await bot.replace_roles(member, [role])
+            role = [next(role for role in server_roles if check_role(role, result.group(2)))]
+            await bot.replace_roles(member, *role)
             await bot.send_message(message.channel, "{}'s role changed to {}".format(member.name, role.name))
         except discord.Forbidden:
             print("Don't have the permission to do it; message Sara")
@@ -215,11 +228,12 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    await command.announce_new_brother(announce_new_brother,
-            context_factory(member, announce_new_brother))
+    if member.server.id == '163647742629904384':
+        await command.announce_new_brother(announce_new_brother, member)
 
 if config.moobot_login['discord_token'] is not None:
     bot.run(config.moobot_login['discord_token'])
+
 else:
     bot.run(config.moobot_login['email'],
         config.moobot_login['password'])

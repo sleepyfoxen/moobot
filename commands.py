@@ -183,10 +183,34 @@ async def moo(cls_, ctx):
     '''
     await cls_.bot.send_message(ctx.message.channel, message)
 
-async def announce_new_brother(cls_, ctx):
+async def announce_new_brother(cls_, member):
     """A new member of The Cult has joined us, and for this we must give our welcome"""
-    message = '{} has joined us'.format(ctx.member)
-    await cls_.send_message(ctx.message.channel, message)
-    # TODO: replace_roles(member, *roles)
-    role = Role(name='Not Greig | Members')
-    await cls_.bot.replace_roles(member, [role])
+    gamesoc_server = member.server
+    server_roles = gamesoc_server.roles
+    # TODO: Get the ID for the Not Greig role
+    role_name = 'Not Greig | Members'
+    role = [next(role for role in server_roles if check_role(role, role_name)),
+            gamesoc_server.default_role]
+    if role[0].name == role_name:
+        print("Changing to Not Greig role")
+        try:
+            await cls_.bot.replace_roles(member, *role)
+        except discord.Forbidden:
+            print("Permission ain't set. Go set the permissions")
+        except discord.HTTPException as e:
+            print("Got an HTTPException: {} {} ".format(e.response.status,
+                    e.response.reason))
+    else:
+        mod_chat_id = '210019390849155072'
+        mod_chat = gamesoc_server.get_channel(mod_chat_id)
+        # TODO: get the ID for the committee members role
+        alert = "@Committee members we got a new one, and moobot can't assign\
+                em the appropriate role. Someone go do it please thanks"
+        await cls_.bot.send_message(mod_chat, alert)
+    general_chat_id = '163647742629904384'
+    general_chat = gamesoc_server.get_channel(general_chat_id)
+    welcome_message = "Welcome to the server {}!".format(member.mention)
+    await cls_.bot.send_message(general_chat, welcome_message)
+
+def check_role(role, res):
+    return role.name == res
