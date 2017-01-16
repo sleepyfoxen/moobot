@@ -197,16 +197,19 @@ async def on_message(message):
         await command.moo(moo_cog, context_factory(message, moo_cog))
     elif role_change_matcher.match(message.content.lower()):
         try:
-            print("Matched")
             result = role_change_matcher.match(message.content.lower())
-            member = discord.Member(id=result[0])
-            role = [discord.Role(name=result[1])]
-            await bot.replace_roles(member, *role)
+            # TODO: Check if we're in the gamesoc server. If this gets triggered in a DM,
+            # message.server will return `None`
+            member = message.server.get_member(result.group(1))
+            server_roles = message.server.roles
+            role = next(x for x in server_roles if lambda x : x.name == result.group(2))
+            print(str(role))
+            await bot.replace_roles(member, [role])
             await bot.send_message(message.channel, "{}'s role changed to {}".format(member.name, role.name))
         except discord.Forbidden:
             print("Don't have the permission to do it; message Sara")
-        except discord.HTTPException(response, message):
-            print("Got an HTTPException: {} {} ".format(response.status, response.reason))
+        except discord.HTTPException as e:
+            print("Got an HTTPException: {} {} ".format(e.response.status, e.response.reason))
 
     await bot.process_commands(message)
 
