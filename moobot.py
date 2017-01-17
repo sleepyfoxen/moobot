@@ -209,27 +209,29 @@ async def on_message(message):
     elif message.content.lower() == 'test':
         for i in message.server.roles:
             print("{}: {}".format(i.id, i.name))
-    elif role_change_matcher.match(message.content.lower()):
-        try:
-            result = role_change_matcher.match(message.content.lower())
-            # TODO: Check if we're in the gamesoc server. If this gets triggered in a DM,
-            # message.server will return `None`
-            member = message.server.get_member(result.group(1))
-            server_roles = message.server.roles
-            role = [next(role for role in server_roles if check_role(role, result.group(2)))]
-            await bot.replace_roles(member, *role)
-            await bot.send_message(message.channel, "{}'s role changed to {}".format(member.name, role.name))
-        except discord.Forbidden:
-            print("Don't have the permission to do it; message Sara")
-        except discord.HTTPException as e:
-            print("Got an HTTPException: {} {} ".format(e.response.status, e.response.reason))
+    # elif role_change_matcher.match(message.content.lower()):
+    #     try:
+    #         result = role_change_matcher.match(message.content.lower())
+    #         # TODO: Check if we're in the gamesoc server. If this gets triggered in a DM,
+    #         # message.server will return `None`
+    #         member = message.server.get_member(result.group(1))
+    #         server_roles = message.server.roles
+    #         role = [next(role for role in server_roles if check_role(role, result.group(2)))]
+    #         await bot.replace_roles(member, *role)
+    #         await bot.send_message(message.channel, "{}'s role changed to {}".format(member.name, role.name))
+    #     except discord.Forbidden:
+    #         print("Don't have the permission to do it; message Sara")
+    #     except discord.HTTPException as e:
+    #         print("Got an HTTPException: {} {} ".format(e.response.status, e.response.reason))
 
     await bot.process_commands(message)
 
 @bot.event
 async def on_member_join(member):
-    if member.server.id == '163647742629904384':
+    if member.server.id == '163647742629904384': # Gamesoc server
         await command.announce_new_brother(announce_new_brother, member)
+    if member.server.id == '242660481792344064': # Moo server
+        await command.test_replace(bot, member)
 
 if config.moobot_login['discord_token'] is not None:
     bot.run(config.moobot_login['discord_token'])

@@ -3,8 +3,7 @@ import asyncio
 import datetime
 
 import config
-
-
+import discord
 
 async def harambe(cls_, ctx):
     """harambe counter"""
@@ -201,6 +200,7 @@ async def announce_new_brother(cls_, member):
             print("Got an HTTPException: {} {} ".format(e.response.status,
                     e.response.reason))
     else:
+        # Alert the mods to change it manually
         mod_chat_id = '210019390849155072'
         mod_chat = gamesoc_server.get_channel(mod_chat_id)
         # TODO: get the ID for the committee members role
@@ -211,6 +211,22 @@ async def announce_new_brother(cls_, member):
     general_chat = gamesoc_server.get_channel(general_chat_id)
     welcome_message = "Welcome to the server {}!".format(member.mention)
     await cls_.bot.send_message(general_chat, welcome_message)
+
+async def test_replace(bot, member):
+    s = member.server
+    roles = s.roles
+    rn = 'moo'
+    r = [next(role for role in roles if check_role(role, rn)), s.default_role]
+    if r[0].name == rn:
+        print("Changing to moo role")
+        try:
+            await bot.replace_roles(member, *r)
+            await bot.send_message(s.get_channel('242660481792344064'), 'Did it')
+        except discord.Forbidden:
+            print("Wat")
+        except discord.HTTPException as e:
+            print("Got an HTTPException: {} {} ".format(e.response.status,
+                    e.response.reason))
 
 def check_role(role, res):
     return role.name == res
