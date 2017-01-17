@@ -153,7 +153,7 @@ async def top_respect(cls_, ctx):
 
 
 async def emojii_pasta(cls_, ctx):
-    """translates text to emojii, see emojiityper.com"""
+    """translates text to emoji, see emojityper.com"""
     pass
 
 async def with_rice(cls_, ctx):

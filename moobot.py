@@ -228,10 +228,8 @@ async def on_message(message):
 
 @bot.event
 async def on_member_join(member):
-    if member.server.id == '163647742629904384': # Gamesoc server
+    if member.server.id == '163647742629904384':
         await command.announce_new_brother(announce_new_brother, member)
-    if member.server.id == '242660481792344064': # Moo server
-        await command.test_replace(bot, member)
 
 if config.moobot_login['discord_token'] is not None:
     bot.run(config.moobot_login['discord_token'])
