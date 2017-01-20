@@ -199,14 +199,14 @@ async def on_message(message):
         try:
             print("Matched")
             result = role_change_matcher.match(message.content.lower())
-            member = discord.Member(id=result[0])
+            member = server.getMember(id=result[0])
             role = [discord.Role(name=result[1])]
             await bot.replace_roles(member, *role)
             await bot.send_message(message.channel, "{}'s role changed to {}".format(member.name, role.name))
         except discord.Forbidden:
             print("Don't have the permission to do it; message Sara")
-        except discord.HTTPException(response, message):
-            print("Got an HTTPException: {} {} ".format(response.status, response.reason))
+        except discord.HTTPException as e:
+            print("Got an HTTPException: {} {} ".format(e.response.status, e.response.reason))
 
     await bot.process_commands(message)
 
