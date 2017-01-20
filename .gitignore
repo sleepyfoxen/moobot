@@ -1,7 +1,7 @@
 # untracked files
 .venv/
 moobot.db
-.log
+*.log
 __pycache__/
 .idea/
 config.py

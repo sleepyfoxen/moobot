@@ -1,0 +1,45 @@
+# have you mooed today?
+
+import logging
+
+import discord
+from discord.ext import commands
+
+
+class Moo:
+    """Moo"""
+
+    def __init__(self, bot: discord.ext.commands.Bot):
+        self.bot = bot
+
+        @self.bot.listen('on_message')
+        async def match(message: discord.Message) -> None:
+            if message.content.lower() == 'moo':
+                await bot.process_commands(message)
+
+
+    @commands.command()
+    async def moo(self) -> None:
+        """moo"""
+        message = '''```
+         (__)
+         (oo)
+   /------\/
+  / |    ||
+ *  /\---/\\
+    ~~   ~~
+...."Have you mooed today?"...```
+        '''
+        await self.bot.say(message)
+
+
+
+def setup() -> None:
+    logging.log(logging.INFO, 'Moo cog is being set up')
+    return
+
+
+def cog() -> None:
+    logging.log(logging.INFO, 'Moo cog is being registered')
+    return Moo
+
