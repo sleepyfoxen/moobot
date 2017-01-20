@@ -204,8 +204,8 @@ async def on_message(message):
     elif password_matcher.match(message.content):
         await command.one_two_two_two_three_four_five(one_two,
                                             context_factory(message, one_two))
-    elif message.content.lower()  = 'apt-get moo':
-        await command.moo(moo_cog, context_factory(message, moo_cog))
+    elif message.content.lower() == 'apt-get moo':
+        await command.aptgetmoo(moo_cog, context_factory(message, moo_cog))
     elif message.content.lower() == 'test':
         for i in message.server.roles:
             print("{}: {}".format(i.id, i.name))

@@ -172,13 +172,12 @@ async def one_two_two_two_three_four_five(cls_, ctx):
 async def aptgetmoo(cls_, ctx):
     """moo"""
     message = '''```
-             (__)
-             (oo)
-       /------\/
-      / |    ||
-     *  /\---/\\
-        ~~   ~~
-    ...."Have you mooed today?"...
+                 (__)
+         _______~(..)~
+           ,----\(oo)
+          /|____|,'
+         * /"\ /\\
+..."Have you mooed today?"...
     ```
     '''
     await cls_.bot.send_message(ctx.message.channel, message)
