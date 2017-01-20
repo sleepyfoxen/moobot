@@ -99,14 +99,14 @@ class CopyPasta:
     async def copy_pasta(self, ctx):
         """memify your text"""
 
-class Moo:
+class AptGetMoo:
     """Moo"""
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(pass_context=True)
     async def moo(self, ctx):
-        await command.moo(self, ctx)
+        await command.aptgetmoo(self, ctx)
 
 class AnnounceNewBrother:
     """New brother"""
@@ -147,14 +147,14 @@ bot.add_cog(Harambe(bot))
 bot.add_cog(Respect(bot))
 bot.add_cog(OneTwoTwoTwoThreeFourFive(bot))
 bot.add_cog(WithRice(bot))
-bot.add_cog(Moo(bot))
+bot.add_cog(AptGetMoo(bot))
 bot.add_cog(AnnounceNewBrother(bot))
 
 harambe = bot.get_cog('Harambe')
 respect = bot.get_cog('Respect')
 one_two = bot.get_cog('OneTwoTwoTwoThreeFourFive')
 with_rice = bot.get_cog('WithRice')
-moo_cog = bot.get_cog('Moo')
+moo_cog = bot.get_cog('AptGetMoo')
 announce_new_brother = bot.get_cog('AnnounceNewBrother')
 
 password_matcher = re.compile('122+345') # 1222*345
@@ -204,11 +204,13 @@ async def on_message(message):
     elif password_matcher.match(message.content):
         await command.one_two_two_two_three_four_five(one_two,
                                             context_factory(message, one_two))
-    elif message.content.lower() in ['apt-get moo', 'moo']:
+    elif message.content.lower()  = 'apt-get moo':
         await command.moo(moo_cog, context_factory(message, moo_cog))
     elif message.content.lower() == 'test':
         for i in message.server.roles:
             print("{}: {}".format(i.id, i.name))
+    elif re.match('^mo{2,}\W*$', message.content.lower()):
+        await bot.send_message(message.channel, "mooooooooo")
     # elif role_change_matcher.match(message.content.lower()):
     #     try:
     #         result = role_change_matcher.match(message.content.lower())
