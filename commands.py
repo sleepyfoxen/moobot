@@ -160,6 +160,7 @@ async def with_rice(cls_, ctx):
     """the spicy with rice meme,
     gone from plaguing reddit to plaguing discord"""
     are_we_riced = 'rice' in ctx.message.content.lower()
+    await cls_.bot.send_message("With RICE :rice: :rice: :rice:")
 
 # TODO: this
 
@@ -168,7 +169,7 @@ async def one_two_two_two_three_four_five(cls_, ctx):
 
     await cls_.bot.send_message(ctx.message.channel, ctx.message.content)
 
-async def moo(cls_, ctx):
+async def aptgetmoo(cls_, ctx):
     """moo"""
     message = '''```
              (__)
