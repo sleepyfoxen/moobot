@@ -5,6 +5,8 @@ import datetime
 import config
 import discord
 
+import compose as _
+
 async def harambe(cls_, ctx):
     """harambe counter"""
     # need to reset the number of days since harambe was last mentioned
@@ -187,47 +189,56 @@ async def announce_new_brother(cls_, member):
     """A new member of The Cult has joined us, and for this we must give our welcome"""
     gamesoc_server = member.server
     server_roles = gamesoc_server.roles
-    # TODO: Get the ID for the Not Greig role
-    role_name = 'Not Greig | Members'
-    role = [next(role for role in server_roles if check_role(role, role_name)),
-            gamesoc_server.default_role]
-    if role[0].name == role_name:
-        print("Changing to Not Greig role")
+    roles = ['Greig', 'Not Greig | Members']
+    mod_message = "@here we got a new one, and moobot can't assign em the\
+    appropriate role for some reason. Someone go do it please thanks"
+    alert_mods = _.curry(cls_.bot.send_message,
+                gamesoc_server.get_channel('210019390849155072'))
+    # TODO: Get the ID for roles
+    # Figure out if it's Greig first
+    role = _.if_else(is_greig(member), _.curry(get_role, gamesoc_server), roles)
+    if len(role) == 1:
+        # Alert the mods to change it manually
+        await alert_mods(mod_message)
+    else:
         try:
+            print("Changing them roles yo")
             await cls_.bot.replace_roles(member, *role)
         except discord.Forbidden:
-            print("Permission ain't set. Go set the permissions")
+            print("Bot has been forbidden from setting the new guy's\
+                    role. Go check it out.")
+            await alert_mods(mod_message)
         except discord.HTTPException as e:
-            print("Got an HTTPException: {} {} ".format(e.response.status,
-                    e.response.reason))
-    else:
-        # Alert the mods to change it manually
-        mod_chat_id = '210019390849155072'
-        mod_chat = gamesoc_server.get_channel(mod_chat_id)
-        # TODO: get the ID for the committee members role
-        alert = "@Committee members we got a new one, and moobot can't assign\
-                em the appropriate role. Someone go do it please thanks"
-        await cls_.bot.send_message(mod_chat, alert)
-    general_chat_id = '163647742629904384'
-    general_chat = gamesoc_server.get_channel(general_chat_id)
+            print("Got an HTTPException: {} {}".format(e.response.status,
+            e.response.reason))
+            await alert_mods(mod_message)
+    general_chat = gamesoc_server.get_channel('163647742629904384')
     welcome_message = "Welcome to the server {}!".format(member.mention)
     await cls_.bot.send_message(general_chat, welcome_message)
 
-async def test_replace(bot, member):
-    s = member.server
-    roles = s.roles
-    rn = 'moo'
-    r = [next(role for role in roles if check_role(role, rn)), s.default_role]
-    if r[0].name == rn:
-        print("Changing to moo role")
-        try:
-            await bot.replace_roles(member, *r)
-            await bot.send_message(s.get_channel('242660481792344064'), 'Did it')
-        except discord.Forbidden:
-            print("Wat")
-        except discord.HTTPException as e:
-            print("Got an HTTPException: {} {} ".format(e.response.status,
-                    e.response.reason))
+def is_greig(member):
+    """Checks if it's Greig. Lmao"""
+    return member.id == '105358952753041408'
 
-def check_role(role, res):
-    return role.name == res
+def get_role(server, wanted_role_name):
+    """
+    Gets the wanted role (if found) along with the default role
+    ------
+    Parameters:
+        server: The Server object to get the roles from
+        wanted_role_name: The name of the desired role
+    Returns:
+        role: An array with [<wanted role>, <default role>] if the desired role is found,
+                or simply [<default role>] if it isn't.
+    """
+    # TODO: switch to using role ID instead
+    role = [next(r for r in server.roles if check_role(r, wanted_role_name), None),
+            server.default_role]
+    if role[0] is not None:
+        print("{} role found. Returning wanted role with default".format(wanted_role_name))
+        return role
+    print("Role not found. Returning default role {}".format(server.default_role))
+    return role[1:]
+
+def check_role(role, wanted_role_name):
+    return role.name == wanted_role_name
