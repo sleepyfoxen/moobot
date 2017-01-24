@@ -4,6 +4,7 @@
 
 import os
 from functools import partial
+import logging
 
 from pluginbase import PluginBase
 
@@ -27,7 +28,12 @@ plugins = []
 # Run each cog's set up code
 for plugin_name in source.list_plugins():
     plugin = source.load_plugin(plugin_name)
-    plugin.setup()
+    try:
+        plugin.setup()
+    except AttributeError as e:
+        logging.error('%s could not be loaded: no setup() function',
+                      plugin.__name__)
 
-    plugins.append(plugin)
+    else:
+        plugins.append(plugin)
 

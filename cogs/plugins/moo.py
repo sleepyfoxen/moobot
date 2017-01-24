@@ -9,7 +9,7 @@ from discord.ext import commands
 class Moo:
     """Moo"""
 
-    def __init__(self, bot: discord.ext.commands.Bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
         @self.bot.listen('on_message')
@@ -33,13 +33,12 @@ class Moo:
         await self.bot.say(message)
 
 
-
 def setup() -> None:
-    logging.log(logging.INFO, 'Moo cog is being set up')
+    logging.info('Moo cog is being set up')
     return
 
 
-def cog() -> None:
-    logging.log(logging.INFO, 'Moo cog is being registered')
+def cog() -> Moo:
+    logging.info('Moo cog is being registered')
     return Moo
 

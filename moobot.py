@@ -7,7 +7,10 @@ import logging
 import config
 
 # set up logging
-logging.basicConfig(filename=config.log_file, level=config.log_level)
+if config.log_file is None:
+    logging.basicConfig(level=config.log_level)
+else:
+    logging.basicConfig(filename=config.log_file, level=config.log_level)
 
 import discord
 from discord.ext import commands
@@ -20,7 +23,7 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or(''),
             description='a shitty discord bot for respect and other bad memes')
 
 # set up commands
-cogs.register.register(cogs.plugin_loader.plugins, bot)
+cogs.register(cogs.plugins, bot)
 logging.warning('attempting to load %s cogs', str(len(bot.cogs)))
 
 
@@ -45,11 +48,6 @@ async def on_message(message: discord.Message) -> None:
         # saying that this isn't a hack would be a bit misrepresentative
         await bot.process_commands(message)
 
-
-@bot.event
-async def on_member_join(member: discord.Member) -> None:
-    if member.server.id == '163647742629904384':
-        await command.announce_new_brother(announce_new_brother, member)
 
 if config.moobot_login['discord_token'] is not None:
     bot.run(config.moobot_login['discord_token'])
