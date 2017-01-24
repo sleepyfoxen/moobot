@@ -46,6 +46,7 @@ async def on_message(message: discord.Message) -> None:
         message.content = message.content.split(bot.user.mention + ' ')[1]+ ' '
         # catch the space after the @moobot, and add a space at the end
         # saying that this isn't a hack would be a bit misrepresentative
+        logging.debug('Someone tagged moobot %s ', message.content)
         await bot.process_commands(message)
 
 

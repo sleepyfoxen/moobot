@@ -7,8 +7,8 @@ import logging
 # as email address / password based login is depricated
 moobot_login = {
     'discord_token': None,
-    'email': 'censored',
-    'password': 'also censored'
+    'email': None,
+    'password': None
 }
 
 if moobot_login['discord_token'] is None and moobot_login['email'] is None:
@@ -20,26 +20,15 @@ status_message = 'can moobot dream of electric sheep?'
 
 database_file = 'moobot.db'
 
-fixed_karma = {
-    '1337': 1337
+fixed_respect = {
+    '1337': '1337'
 }
 
 
 # things I should store in a database
 subscribed_servers = {
     # server_id
-    '163647742629904384': { # gamesoc
-        'announce_channel_id': '163647742629904384', # general
-        'default_roles': ('188008690542968832',) # tuple of ids of roles
-    },
-    '186448834732228609': { # geas
-        'announce_channel_id': '186448834732228609',
-        'default_roles': ()
-    },
-    '228960217142919169': { # sam
-        'announce_channel_id': '228960217142919169',
-        'default_roles': ()
-    },
+
     '242660481792344064': { # moo
         'announce_channel_id': '273235427966713857',
         'default_roles': ('273236044533465088',)
