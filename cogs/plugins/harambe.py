@@ -14,6 +14,11 @@ class Harambe:
     def __init__(self, bot: discord.Bot) -> None:
         self.bot = bot
 
+        @self.bot.listen('on_message')
+        async def match(message: discord.Message) -> None:
+            if 'harambe' in message.content.lower():
+                await bot.process_commands(message)
+
     @commands.command(pass_context = True)
     async def harambe(self, ctx: commands.Context) -> None:
         """forever in our ~~memes~~ hearts"""
