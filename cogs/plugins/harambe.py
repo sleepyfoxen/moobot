@@ -11,7 +11,7 @@ from db import c, conn
 class Harambe:
     """may he rest in peace"""
 
-    def __init__(self, bot: discord.Bot) -> None:
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
         @self.bot.listen('on_message')
@@ -66,6 +66,15 @@ class Harambe:
                 c.execute('''update harambe
                                 set number=number+1
                                 where server=?''', (server_id,))
+                conn.commit()
+
+        else:
+            d_new = ctx.message.timestamp
+            c.execute('''insert into harambe
+                            values (?, ?, 1, 0, 0)''', (server_id, str(d_new)))
+
+            conn.commit()
+
 
 def setup() -> None:
     logging.info('harambe cog is being set up')
