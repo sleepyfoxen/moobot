@@ -17,7 +17,7 @@ from db import c, conn
 class Respect:
     """press f to pay respects"""
 
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
         @self.bot.listen('on_message')

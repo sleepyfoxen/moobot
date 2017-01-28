@@ -17,7 +17,7 @@ from config import subscribed_servers
 
 class AnnounceNewBrother:
 
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
         @self.bot.listen('on_member_join')
