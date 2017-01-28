@@ -82,7 +82,7 @@ class Respect:
 
         for row in c.execute('select * from respect'):
             # row -> ('user_id', amount)
-            memer: discord.Member
+            # memer: discord.Member
             memer = ctx.message.server.get_member(row[0])
             # see if this member is on *this* server
             if memer is not None:
