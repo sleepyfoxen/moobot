@@ -12,6 +12,7 @@ it also does some other that are mostly memes.
 
 ## prereqs
 
+* `fortune`, `cowsay`
 * python 3.5 or 3.6
 * virtualenv
 * pip
