@@ -1,3 +1,5 @@
+# This fork ain't being worked on anymore. Go [here](https://github.com/aptgetmoo/moobot) for the good good
+
 # moobot
 
 moobot is a shitty discord bot that allows people to pay respects.
