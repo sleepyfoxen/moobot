@@ -1,6 +1,11 @@
 aiohttp==1.0.5
+appdirs==1.4.0
 async-timeout==1.1.0
 chardet==2.3.0
 discord.py==0.16.3
 multidict==2.1.4
+packaging==16.8
+pluginbase==0.5
+pyparsing==2.1.10
+six==1.10.0
 websockets==3.2

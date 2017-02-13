@@ -7,17 +7,21 @@ moobot is a shitty discord bot that allows people to pay respects.
 [12:35 AM] moobot: apt-get moo pays their respects
 ```
 
-now maybe won't crash every 0.00001 seconds
+it also does some other that are mostly memes.
+
 
 ## prereqs
 
-* python ~~3.4 or~~ 3.5
+* `fortune`, `cowsay`
+* python 3.5 or 3.6
 * virtualenv
 * pip
 
-(dropped support for python3.4 because I'm too lazy)
+(python 3.4 is no longer supported)
 
 ## install
+
+These instructions are for python 3.5, but you can just replace 3.5 with 3.6 for the newer version of python.
 
 **set up virtualenv**
 
@@ -51,12 +55,10 @@ Also, if you are cool enough to use a compiled python, make sure that `sqlite-de
 
 ### shout at me
 
-I'm not currently on the discord server that interacts with moobot the most, so...
+If you want to:
 
-If you want me to:
-
-* add moobot to your server
-* fix this sorry mess
+* add moobot to your server for some reason
+* yell at me to fix this sorry mess
 * shout at me for something else
 
 you can join moobot's discord server. The link is [https://discord.gg/QDJYvTz](https://discord.gg/QDJYvTz).

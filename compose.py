@@ -25,6 +25,7 @@ def if_else(condition, callback, args):
                    in `callback` if `condition(obj) == True`. If not,
                    the second element will be used instead.
     """
+    # TODO: Think if this is the most flexible implementation of this function
     return callback(args[0]) if condition else callback(args[1])
 
 if __name__ == "__main__":
