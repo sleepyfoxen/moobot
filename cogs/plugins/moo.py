@@ -9,7 +9,6 @@ from discord.ext import commands
 
 class Moo:
     """Moo"""
-
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
@@ -20,7 +19,10 @@ class Moo:
             if message.content.lower() == 'moo':
                 await bot.process_commands(message)
             elif re.match('^mo{2,}\W*$', message.content.lower()):
-                await bot.send_message(message.channel, 'mooooooooooooooooo')
+                moo = message.content
+                if len(moo) <= 1994:
+                    moo = moo[0:2] + 'oooooo' + moo[2:]
+                await bot.send_message(message.channel, moo)
 
 
     @commands.command()
