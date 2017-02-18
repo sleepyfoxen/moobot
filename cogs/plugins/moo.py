@@ -24,6 +24,14 @@ class Moo:
 
 
     @commands.command()
+    async def reply(self) -> None:
+        """Heh nothing personnel kid"""
+        # TODO: look out for maximum message size
+        match = re.match('^(m)(o{2,})(\W*)$', message.content.lower()):
+        message = match.group[1] + 2*match.group[2] + 2*match.group[3];
+        await bot.send_message(message.channel, message)
+
+    @commands.command()
     async def moo(self) -> None:
         """moo"""
         message = '''```
@@ -46,4 +54,3 @@ def setup() -> None:
 def cog() -> Moo:
     logging.info('Moo cog is being registered')
     return Moo
-
