@@ -49,7 +49,6 @@ async def on_message(message: discord.Message) -> None:
         logging.debug('Someone tagged moobot %s ', message.content)
         await bot.process_commands(message)
 
-
 if config.moobot_login['discord_token'] is not None:
     bot.run(config.moobot_login['discord_token'])
 
