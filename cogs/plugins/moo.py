@@ -19,27 +19,30 @@ class Moo:
                 return
             if message.content.lower() == 'moo':
                 await bot.process_commands(message)
-            elif re.match('^(m)(o{2,})(\W*)$', message.content.lower(), re.I):
-                await bot.process_commands(message)
+            elif re.match('^(m+)(o{2,})(\W*)$', message.content.lower(), re.I):
+                await self.reply(message)
 
 
-    @commands.command()
-    async def reply(self) -> None:
+    async def reply(self, message: discord.Message) -> None:
         """Heh nothing personnel kid"""
-        match = re.match('^(m)(o{2,})(\W*)$', message.content.lower(), re.I)
+        channel = message.channel
+
+        match = re.match('^(m+)(o{2,})(\W*)$', message.content.lower(), re.I)
         if len(message.content) == 1994:
             message = message.content
         else:
-            message = mooScale(mooReply(match.group, lambda x: x*2))
-        await bot.send_message(message.channel, message)
+            message = self.moo_scale(self.moo_reply(match.groups(),
+                                                    lambda x: x * 2))
+        await self.bot.send_message(channel, message)
 
-    def mooReply(matchGroups: list, stylingFxn: str):
-        # (list, str => str) => list
-        return list(map(stylingFxn, matchGroups))
+    @staticmethod
+    def moo_reply(match_groups: tuple, styling_fxn) -> list:
+        # (list, str => str) -> list
+        return list(map(styling_fxn, match_groups))
 
-    def mooScale(inputList: list):
+    def moo_scale(self, input_list: list) -> str:
         """
-        Data type: list => str
+        Data type: list -> str
         Scales the mooing reply if it's longer than the max char limit of 1994
         ------
         Parameter:
@@ -47,16 +50,17 @@ class Moo:
         Returns:
             The list of match groups joined to form the reply string
         """
-        reducedInputList = inputList
+        reduced_input_list = input_list
         i = 0
-        while len(''.join(reducedInput)) > 1994:
-            reducedInputList[i] = removeIfNotOneLetter(inputList[i])
-            i = (i + 1) % len(reducedInputList)
-        return ''.join(reducedInputList)
+        while len(''.join(reduced_input_list)) > 1994:
+            reduced_input_list[i] = self.remove_if_not_one_letter(input_list[i])
+            i = (i + 1) % len(reduced_input_list)
+        return ''.join(reduced_input_list)
 
-    def removeIfNotOneLetter(input: str):
+    @staticmethod
+    def remove_if_not_one_letter(input: str) -> str:
         """
-        Data type: str => str
+        Data type: str -> str
         Removes one letter off the input string if it isn't already only
         one character long.
         ------
@@ -65,7 +69,11 @@ class Moo:
         Returns:
             The input string with its last letter removed
         """
-        return len(input) > 1? input[:-1] : input
+
+        if len(input) > 1:
+            return input[:-1]
+        else:
+            return input
 
     @commands.command()
     async def moo(self) -> None:

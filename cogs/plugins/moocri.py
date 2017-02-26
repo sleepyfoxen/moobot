@@ -17,21 +17,21 @@ class Moocri:
         async def match(message: discord.Message) -> None:
             if message.author.id == bot.user.id:
                 return
-            if re.match('^![mM]oocri$', message.content):
+            if re.match('^[mM]oocri$', message.content):
                 await bot.process_commands(message)
 
 
-    @commands.command()
+    @commands.command(aliases=['Moocri'])
     async def moocri(self) -> None:
         """A cri"""
-            message = ':sweat_drops: :cow: :sweat_drops:'
-        await bot.send_message(message.channel, message)
+        message = ':sweat_drops: :cow: :sweat_drops:'
+        await self.bot.say(message)
 
 def setup() -> None:
     logging.info('Moocri cog is being set up')
     return
 
 
-def cog() -> Moo:
+def cog() -> Moocri:
     logging.info('Moocri cog is being registered')
-    return Moo
+    return Moocri
