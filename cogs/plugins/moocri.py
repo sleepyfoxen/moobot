@@ -8,7 +8,7 @@ from discord.ext import commands
 
 
 class Moocri:
-    """When someone cries, moobot cries too"""
+    """When you cry, moobot cries with you too"""
 
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
