@@ -49,7 +49,7 @@ class Harambe:
                                 set last=?, number=number+1, chain=0
                                 where server=?''', (str(d_new), server_id))
                 conn.commit()
-                await self.bot.say('days since harambe was last mentioned: '
+                await self.bot.send_message(message.channel, 'days since harambe was last mentioned: '
                                    '%s --> 0' % d_diff.days)
 
             elif d_diff.days == 1:
@@ -60,7 +60,7 @@ class Harambe:
                                 set last=?, number=number+1, chain=chain+1
                                 where server=?''', (str(d_new), server_id))
                 conn.commit()
-                await self.bot.say('daily harambe chain: %s'
+                await self.bot.send_message(message.channel, 'daily harambe chain: %s'
                                    % str(result[3] + 1))
 
             else:
