@@ -8,7 +8,7 @@ class Boop:
     """boops you x3"""
 
     def __init__(self, bot: commands.Bot) -> None:
-        self.bot: commands.Bot = bot
+        self.bot = bot
 
         @self.bot.listen('on_message')
         async def match(message: discord.Message) -> None:
