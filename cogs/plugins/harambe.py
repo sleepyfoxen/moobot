@@ -17,16 +17,17 @@ class Harambe:
         @self.bot.listen('on_message')
         async def match(message: discord.Message) -> None:
             if 'harambe' in message.content.lower():
-                await bot.process_commands(message)
+                await self.harambe(message)
+                # await bot.process_commands(message)
 
-    @commands.command(pass_context = True)
-    async def harambe(self, ctx: commands.Context) -> None:
+    async def harambe(self, message: discord.Message) -> None:
         """forever in our ~~memes~~ hearts"""
 
-        if ctx.message.server is None:
+
+        if message.server is None:
             return
 
-        server_id = ctx.message.server.id
+        server_id = message.server.id
         c.execute('select * from harambe where server=?', (server_id,))
         result = c.fetchone()
 
@@ -39,7 +40,7 @@ class Harambe:
             # (=> str(datetime.datetime), it's a string-encoded ISO-based date)
             d_last = datetime.datetime.strptime(result[1],
                                                 '%Y-%m-%d %H:%M:%S.%f')
-            d_new = ctx.message.timestamp
+            d_new = message.timestamp
             d_diff = d_new - d_last
 
             if d_diff.days >= 2:
@@ -69,7 +70,7 @@ class Harambe:
                 conn.commit()
 
         else:
-            d_new = ctx.message.timestamp
+            d_new = message.timestamp
             c.execute('''insert into harambe
                             values (?, ?, 1, 0, 0)''', (server_id, str(d_new)))
 
