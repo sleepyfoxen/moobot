@@ -26,8 +26,9 @@ class Horizontal_Line:
 
 
 def setup() -> None:
+    logging.info('hr set up.')
     # no setup needed.
 
 def cog() -> Horizontal_Line:
-    logging.info('registering hr cog')
+    logging.info('registering hr cog.')
     return Horizontal_Line
