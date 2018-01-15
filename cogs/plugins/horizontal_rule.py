@@ -19,7 +19,7 @@ class Horizontal_Line:
 
     @commands.command(pass_context=True,
                       aliases=['<hr>', '/hr'])
-    async def f(self, ctx: commands.Context) -> None:
+    async def hr(self, ctx: commands.Context) -> None:
         """inserts horizontal line (of minus emojis)"""
 
         await self.bot.say(':heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign::heavy_minus_sign:')
