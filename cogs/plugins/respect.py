@@ -47,7 +47,7 @@ class Respect:
             c.execute('insert into respect values(?, 1)', u)
             conn.commit()
 
-        await self.bot.say('%s pays their respects'
+        await self.bot.say('%s p-p-pays their respects... all that respect just for little me...'
                            % ctx.message.author.mention)
 
 
@@ -71,7 +71,7 @@ class Respect:
             if result is not None:
                 r = str(result[1])
 
-        await self.bot.say('%s: %s respect' % (ctx.message.author.mention, r))
+        await self.bot.say('%s: %s respect... NOT LIKE I LIKE YOU OR ANYTHING BAKA' % (ctx.message.author.mention, r))
 
 
     @commands.command(pass_context=True)
@@ -100,7 +100,7 @@ class Respect:
         members_stripped = members_stripped[:50]
 
         # build the message
-        message = 'these people spend too much time on discord:\n```'
+        message = 'these silly baka gaijins spend too much time on discord:\n```'
         for member in members_stripped:
             message += '%s - %s respect\n' % (member['name'], member['score'])
 
